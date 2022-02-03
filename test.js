@@ -9,3 +9,4 @@ if (name = getNameFromUser()) {
 } else {
   console.log("you must enter your name!");
 }
+
