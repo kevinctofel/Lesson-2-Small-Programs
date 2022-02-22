@@ -17,7 +17,7 @@ const invalidNumber = (number) => (number.trimStart() === '' || Number.isNaN(Num
 
 let number1, number2;
 
-const getInputs = () => {
+const getFirstOperand = () => {
   prompt(`Welcome to Calculator!\n`);
 
   prompt(`What's the first number?`);
@@ -27,7 +27,10 @@ const getInputs = () => {
     prompt("Hmm... that doesn't look like a valid number.");
     number1 = readline.question();
   }
+  return number1;
+};
 
+const getSecondOperand = () => {
   prompt(`What's the second number?`);
   let number2 = readline.question(); // Ask the user for the second number.
 
@@ -35,6 +38,8 @@ const getInputs = () => {
     prompt("Hmm... that doesn't look like a valid number.");
     number2 = readline.question();
   }
+
+  return number2;
 };
 // console.log(`${number1} ${number2}`); log for test purposes only
 
@@ -60,7 +65,7 @@ let output;
 // } else if (operation === '4') {
 //   output = Number(number1) / Number(number2);
 // }
-const calculate = (operation) => {
+const calculate = (operation, number1, number2) => {
   switch (operation) { // refactored if/else with a switch
     case '1':
       output = Number(number1) + Number(number2);
@@ -81,14 +86,16 @@ const calculate = (operation) => {
 };
 
 function appFlow() {
-  // Get numeric inputs
+  // Get and store numeric inputs
   // Get operation
   // Calculate operation and return output
   // Prompt for another statement to calculate
   // End or clear console (console.clear) and rerun, based on request
-  getInputs();
+  const number1 = getFirstOperand();
+  const number2 = getSecondOperand();
   const operation = getOperation();
-  calculate(operation);
+  console.log(`Number 1 is ${number1}`); // currently undefined
+  calculate(operation, number1, number2);
 }
 
 appFlow();
