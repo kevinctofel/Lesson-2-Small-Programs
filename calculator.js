@@ -1,3 +1,5 @@
+const prompts = require('./modules/config.json');
+
 // Ask the user for the first number.
 // Ask the user for the second number.
 // Ask the user for an operation to perform.
@@ -8,6 +10,7 @@
 // start a new calculation when they respond with yes
 
 const readline = require('readline-sync');
+let repeat = 'N';
 
 const prompt = (message) => ( // refactored function for nicer prompt
   console.log(`=> ${message}`));
@@ -15,40 +18,38 @@ const prompt = (message) => ( // refactored function for nicer prompt
 const invalidNumber = (number) => (number.trimStart() === '' || Number.isNaN(Number(number)));
 // refactored function to check for valid input number
 
-let number1, number2;
-
 const getFirstOperand = () => {
-  prompt(`Welcome to Calculator!\n`);
+  console.clear();
+  prompt(prompts.welcome);
 
-  prompt(`What's the first number?`);
+  prompt(prompts.firstOp);
   let number1 = readline.question(); // Ask the user for the first number.
 
   while (invalidNumber(number1)) { // refactor to add validation function
-    prompt("Hmm... that doesn't look like a valid number.");
+    prompt(prompts.invalid);
     number1 = readline.question();
   }
   return number1;
 };
 
 const getSecondOperand = () => {
-  prompt(`What's the second number?`);
+  prompt(prompts.secondOp);
   let number2 = readline.question(); // Ask the user for the second number.
 
   while (invalidNumber(number2)) { // refactor to add validation function
-    prompt("Hmm... that doesn't look like a valid number.");
+    prompt(prompts.invalid);
     number2 = readline.question();
   }
 
   return number2;
 };
-// console.log(`${number1} ${number2}`); log for test purposes only
 
 const getOperation = () => {
-  prompt(`What operation would you like to perform?\n1) Add 2) Subtract 3) Multiply 4) Divide`);
+  prompt(prompts.getOperation);
   let operation = readline.question(); // Ask the user for an operation to perform.
 
   while (!['1', '2', '3', '4'].includes(operation)) {
-    prompt('Must choose 1, 2, 3 or 4');
+    prompt(prompts.chooseOperation);
     operation = readline.question();
   }
   return operation;
@@ -91,11 +92,15 @@ function appFlow() {
   // Calculate operation and return output
   // Prompt for another statement to calculate
   // End or clear console (console.clear) and rerun, based on request
-  const number1 = getFirstOperand();
-  const number2 = getSecondOperand();
-  const operation = getOperation();
-  console.log(`Number 1 is ${number1}`); // currently undefined
-  calculate(operation, number1, number2);
+  do {
+    const number1 = getFirstOperand();
+    const number2 = getSecondOperand();
+    const operation = getOperation();
+    calculate(operation, number1, number2);
+    prompt(prompts.anotherCalc);
+    repeat = readline.question();
+  } while (repeat === 'Y');
+
 }
 
 appFlow();
