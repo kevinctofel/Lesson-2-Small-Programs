@@ -1,8 +1,7 @@
-# Last update: 05 Oct 2020
+# Last update: 26 Feb 2022
 root: true
 parser: babel-eslint
 parserOptions:
-  ecmaVersion: 6
   ecmaFeatures:
     impliedStrict: true
 env:

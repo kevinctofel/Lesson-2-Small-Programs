@@ -11,33 +11,41 @@ const prompts = require('./modules/config.json');
 
 const readline = require('readline-sync');
 let repeat = 'N';
+let language = '';
 
 const prompt = (message) => ( // refactored function for nicer prompt
   console.log(`=> ${message}`));
+
+const getLang = () => {
+  prompt("Choose a Language: (E)nglish or (S)panish");
+  language = readline.question();
+  language = (language === 'E') ? 'en' : 'es';
+  console.log(language);
+};
 
 const invalidNumber = (number) => (number.trimStart() === '' || Number.isNaN(Number(number)));
 // refactored function to check for valid input number
 
 const getFirstOperand = () => {
   console.clear();
-  prompt(prompts.welcome);
+  prompt(prompts[language].welcome);
 
-  prompt(prompts.firstOp);
+  prompt(prompts[language].firstOp);
   let number1 = readline.question(); // Ask the user for the first number.
 
   while (invalidNumber(number1)) { // refactor to add validation function
-    prompt(prompts.invalid);
+    prompt(prompts[language].invalid);
     number1 = readline.question();
   }
   return number1;
 };
 
 const getSecondOperand = () => {
-  prompt(prompts.secondOp);
+  prompt(prompts[language].secondOp);
   let number2 = readline.question(); // Ask the user for the second number.
 
   while (invalidNumber(number2)) { // refactor to add validation function
-    prompt(prompts.invalid);
+    prompt(prompts[language].invalid);
     number2 = readline.question();
   }
 
@@ -45,11 +53,11 @@ const getSecondOperand = () => {
 };
 
 const getOperation = () => {
-  prompt(prompts.getOperation);
+  prompt(prompts[language].getOperation);
   let operation = readline.question(); // Ask the user for an operation to perform.
 
   while (!['1', '2', '3', '4'].includes(operation)) {
-    prompt(prompts.chooseOperation);
+    prompt(prompts[language].chooseOperation);
     operation = readline.question();
   }
   return operation;
@@ -92,12 +100,14 @@ function appFlow() {
   // Calculate operation and return output
   // Prompt for another statement to calculate
   // End or clear console (console.clear) and rerun, based on request
+
+  getLang();
   do {
     const number1 = getFirstOperand();
     const number2 = getSecondOperand();
     const operation = getOperation();
     calculate(operation, number1, number2);
-    prompt(prompts.anotherCalc);
+    prompt(prompts[language].anotherCalc);
     repeat = readline.question();
   } while (repeat === 'Y');
 
