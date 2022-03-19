@@ -1,0 +1,8 @@
+{
+  "welcome": "Welcome to the Car Payment Calculator!\n",
+  "amount": "What's the loan amount?",
+  "apr": "What's the loan APR?",
+  "duration": "What is the duration of the loan?",
+  "invalid": "Hmm... that doesn't look like a valid number.",
+  "anotherLoan": "Would you like to use the calculator again? (Y)es or (N)o?"
+}
