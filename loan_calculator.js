@@ -8,7 +8,7 @@ const prompts = require('./modules/loan_prompts.json'); // input prompts in JSON
 const prompt = (message) => ( // refactored function for nicer prompt
   console.log(`=> ${message}`));
 
-let loanAmount, monthlyRate, loanDuration;
+let loanAmount, monthlyRate, loanDuration, payment;
 
 const readline = require('readline-sync'); // needed for input
 
@@ -26,21 +26,25 @@ function getAmount() {
 // Get loan APR
 function getAPR() {
   prompt(prompts.apr);
-  monthlyRate = Number(readline.question() / 12).toFixed(5); // Note: STRING
-  console.log(`Monthly rate: ${monthlyRate}%`);
+  monthlyRate = Number(readline.question() / 100 / 12).toFixed(5); // Note: STRING
+  monthlyRate = Number(monthlyRate);
 }
 
 // Get loan duration
 function getDuration() {
   prompt(prompts.duration);
   loanDuration = Number(readline.question() * 12); // Note: NUMBER
-  console.log(`Loan duration: ${loanDuration} months.`);
 }
 
-// Calculate monthlyRate and loan duration in months
+// Calculate monthly payment
 function calcPayment() {
-  // eslint-disable-next-line max-len
-  let payment = (loanAmount) * (monthlyRate / (1 - Math.pow(1 + monthlyRate), (-loanDuration)));
+  if (monthlyRate > 0) {
+    // eslint-disable-next-line max-len
+    payment = (loanAmount) * (monthlyRate / (1 - Math.pow((1 + monthlyRate), (-Number(loanDuration)))));
+  } else {
+    // eslint-disable-next-line max-len
+    payment = Number(loanAmount) / Number(loanDuration);
+  }
   console.log(`Monthly payment is: ${payment.toLocaleString('en', { style: 'currency', currency: 'USD' })}.`);
 }
 
