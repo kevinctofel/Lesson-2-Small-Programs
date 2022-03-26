@@ -9,7 +9,7 @@ const prompt = (message) => ( // nicer, consistent prompts
   console.log(`=> ${message}`));
 
 let loanAmount, monthlyRate, loanDuration, payment;
-let anotherCalc;
+let anotherCalc = '';
 
 const readline = require('readline-sync'); // needed for input
 
@@ -21,14 +21,6 @@ const startup = () => {
 // eslint-disable-next-line consistent-return
 function validNumber(input) {
   if (input < 0 || isNaN(input)) {
-    prompt(`${prompts.invalid}\n`);
-    return false;
-  }
-}
-
-// eslint-disable-next-line consistent-return
-function validYorN(input) {
-  if (input[0].toUpperCase() !== 'Y' || input[0].toUpperCase() !== 'N') {
     prompt(`${prompts.invalid}\n`);
     return false;
   }
@@ -64,16 +56,6 @@ function getDuration() {
   }
 }
 
-function runAgain() {
-  prompt(prompts.anotherLoan);
-  anotherCalc = (readline.question().toUpperCase());
-  while (validYorN(anotherCalc) === false) {
-    prompt(prompts.anotherLoan);
-    anotherCalc = (readline.question().toUpperCase());
-  }
-
-}
-
 // Calculate monthly payment and display result
 function calcPayment() {
   if (monthlyRate > 0) {
@@ -94,6 +76,7 @@ do {
   getAPR();
   getDuration();
   calcPayment();
-  runAgain();
+  prompt(prompts.anotherLoan);
+  anotherCalc = readline.question().toUpperCase();
 
-} while (anotherCalc === 'Y');
+} while (anotherCalc[0] === 'Y');
