@@ -17,22 +17,41 @@ const startup = () => {
   prompt(prompts.welcome);
 };
 
+function validInput(input) {
+  if (input < 0 || isNaN(input)) {
+    prompt(`${prompts.invalid}\n`);
+    return false;
+  }
+}
+
 // Get loan amount
 function getAmount() {
   prompt(prompts.amount);
   loanAmount = Number(readline.question());
+  while (validInput(loanAmount) === false) {
+    prompt(prompts.amount);
+    loanAmount = Number(readline.question());
+  }
 }
 
 // Get loan APR and convert to montly rate
 function getAPR() {
   prompt(prompts.apr);
   monthlyRate = Number(readline.question() / 100 / 12);
+  while (validInput(monthlyRate) === false) {
+    prompt(prompts.monthlyRate);
+    monthlyRate = Number(readline.question());
+  }
 }
 
 // Get loan duration and convert to months
 function getDuration() {
   prompt(prompts.duration);
   loanDuration = Number(readline.question() * 12);
+  while (validInput(loanDuration) === false) {
+    prompt(prompts.duration);
+    loanDuration = Number(readline.question());
+  }
 }
 
 // Calculate monthly payment and display result
