@@ -9,6 +9,7 @@ const prompt = (message) => ( // nicer, consistent prompts
   console.log(`=> ${message}`));
 
 let loanAmount, monthlyRate, loanDuration, payment;
+let anotherCalc;
 
 const readline = require('readline-sync'); // needed for input
 
@@ -17,8 +18,17 @@ const startup = () => {
   prompt(prompts.welcome);
 };
 
-function validInput(input) {
+// eslint-disable-next-line consistent-return
+function validNumber(input) {
   if (input < 0 || isNaN(input)) {
+    prompt(`${prompts.invalid}\n`);
+    return false;
+  }
+}
+
+// eslint-disable-next-line consistent-return
+function validYorN(input) {
+  if (input[0].toUpperCase() !== 'Y' || input[0].toUpperCase() !== 'N') {
     prompt(`${prompts.invalid}\n`);
     return false;
   }
@@ -28,7 +38,7 @@ function validInput(input) {
 function getAmount() {
   prompt(prompts.amount);
   loanAmount = Number(readline.question());
-  while (validInput(loanAmount) === false) {
+  while (validNumber(loanAmount) === false) {
     prompt(prompts.amount);
     loanAmount = Number(readline.question());
   }
@@ -38,8 +48,8 @@ function getAmount() {
 function getAPR() {
   prompt(prompts.apr);
   monthlyRate = Number(readline.question() / 100 / 12);
-  while (validInput(monthlyRate) === false) {
-    prompt(prompts.monthlyRate);
+  while (validNumber(monthlyRate) === false) {
+    prompt(prompts.apr);
     monthlyRate = Number(readline.question());
   }
 }
@@ -48,10 +58,20 @@ function getAPR() {
 function getDuration() {
   prompt(prompts.duration);
   loanDuration = Number(readline.question() * 12);
-  while (validInput(loanDuration) === false) {
+  while (validNumber(loanDuration) === false) {
     prompt(prompts.duration);
     loanDuration = Number(readline.question());
   }
+}
+
+function runAgain() {
+  prompt(prompts.anotherLoan);
+  anotherCalc = (readline.question().toUpperCase());
+  while (validYorN(anotherCalc) === false) {
+    prompt(prompts.anotherLoan);
+    anotherCalc = (readline.question().toUpperCase());
+  }
+
 }
 
 // Calculate monthly payment and display result
@@ -63,12 +83,17 @@ function calcPayment() {
     // eslint-disable-next-line max-len
     payment = Number(loanAmount) / Number(loanDuration);
   }
-  console.log(`Monthly payment is: ${payment.toLocaleString('en', { style: 'currency', currency: 'USD' })}.`);
+  console.log(`Monthly payment is: ${payment.toLocaleString('en', { style: 'currency', currency: 'USD' })}.\n`);
 }
 
 // main app flow, can be used within a loop for to support multiple iterations
-startup();
-getAmount();
-getAPR();
-getDuration();
-calcPayment();
+
+do {
+  startup();
+  getAmount();
+  getAPR();
+  getDuration();
+  calcPayment();
+  runAgain();
+
+} while (anotherCalc === 'Y');
