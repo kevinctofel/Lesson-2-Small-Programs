@@ -6,25 +6,16 @@ function prompt(message) {
   console.log(`=> ${message}`);
 }
 
-// eslint-disable-next-line max-lines-per-function
 function displayWinner(choice, computerChoice) {
   prompt(`You chose ${choice}, computer chose ${computerChoice}`);
 
   switch (true) {
     case choice === 'rock' && (computerChoice === 'scissors' || computerChoice ===
     'lizard'):
-      prompt('You win!');
-      break;
     case choice === 'paper' && (computerChoice === 'rock' || computerChoice === 'Spock'):
-      prompt('You win!');
-      break;
     case choice === 'scissors' && (computerChoice === 'paper' || computerChoice === 'lizard'):
-      prompt('You win!');
-      break;
     case choice === 'Spock' && (computerChoice === 'rock' || computerChoice ===
     'scissors'):
-      prompt('You win!');
-      break;
     case choice === 'lizard' && (computerChoice === 'paper' || computerChoice ===
       'Spock'):
       prompt('You win!');
